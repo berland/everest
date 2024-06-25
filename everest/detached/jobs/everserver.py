@@ -33,7 +33,7 @@ from everest.strings import (
     STOP_ENDPOINT,
 )
 from everest.util import configure_logger, makedirs_if_needed, version_info
-
+from  ert.shared.feature_toggling import FeatureScheduler
 
 def get_machine_name():
     """Returns a name that can be used to identify this machine in a network
@@ -222,7 +222,9 @@ def main(args):
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("--config-file", type=str)
     arg_parser.add_argument("--debug", action="store_true")
+    FeatureScheduler.add_to_argparse(arg_parser)
     options, _ = arg_parser.parse_known_args(args=args)
+    FeatureScheduler.set_value(options)
     config = EverestConfig.load_file(options.config_file)
     if options.debug:
         config.logging_level = "debug"

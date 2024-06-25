@@ -97,8 +97,7 @@ environment:
   random_seed: 123456
 
 simulator:
-  queue_system: local
-  cores: 3
+  queue_system: slurm
 
 install_data:
   -

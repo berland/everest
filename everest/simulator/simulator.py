@@ -39,7 +39,7 @@ class Simulator(BatchSimulator):
         super(Simulator, self).__init__(
             self._ert_config, controls_def, results_def, callback=callback
         )
-
+        print(Simulator)
         self._batch = 0
         self._cache: Optional[_SimulatorCache] = None
         if ever_config.simulator is not None and ever_config.simulator.enable_cache:

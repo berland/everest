@@ -22,7 +22,7 @@ from everest.detached import (
 )
 from everest.plugins.site_config_env import PluginSiteConfigEnv
 from everest.util import makedirs_if_needed, version_info
-
+from ert.shared.feature_toggling import FeatureScheduler
 from .utils import (
     handle_keyboard_interrupt,
     report_on_previous_run,
@@ -83,6 +83,7 @@ def setup_args(argv):
         help="Display all jobs executed from the forward model",
     )
 
+    FeatureScheduler.add_to_argparse(arg_parser)
     return arg_parser.parse_args(args=argv)
 
 

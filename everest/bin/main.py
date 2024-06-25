@@ -17,7 +17,7 @@ from everest.bin.kill_script import kill_entry
 from everest.bin.monitor_script import monitor_entry
 from everest.bin.visualization_script import visualization_entry
 from everest.util import configure_logger
-
+from ert.shared.feature_toggling import FeatureScheduler
 
 def _create_dump_action(dumps, extended=False):
     # Action for aiding user, --help stype
@@ -81,13 +81,16 @@ class EverestMain(object):
             action="version",
             version="%(prog)s {version}".format(version=everest_version),
         )
+        FeatureScheduler.add_to_argparse(arg_parser)
 
         # Parse_args defaults to [1:] for args, but you need to
         # exclude the rest of the args too, or validation will fail
         parsed_args = arg_parser.parse_args(args[1:2])
         if not hasattr(self, parsed_args.command):
             arg_parser.error("Unrecognized command")
-
+        print("here..")
+        FeatureScheduler.set_value(parsed_args)
+        print("set value done")
         # Somewhere some logging to the root is done, this leads to logging going to
         # the console. Install a null handler to prevent this:
         null_handler = logging.NullHandler()
@@ -95,8 +98,9 @@ class EverestMain(object):
         logger = configure_logger("everest_main", log_to_azure=True)
         logger.info(f"Started everest with {parsed_args}")
         # Use dispatch pattern to invoke method with same name
+        print("getattring")
         getattr(self, parsed_args.command)(args[2:])
-
+        print("everestmain done")
     @classmethod
     def _methods_help(cls):
         """Return documentation of the public methods in this class"""
